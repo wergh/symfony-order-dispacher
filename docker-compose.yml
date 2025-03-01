@@ -1,0 +1,55 @@
+services:
+  # Servicio PHP para Symfony
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - database
+      - rabbitmq
+    environment:
+      DATABASE_URL: mysql://symfony:symfony@database:3306/symfony?serverVersion=8.0
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+
+  # Servidor web Nginx
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  # Base de datos MySQL
+  database:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # RabbitMQ para colas
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # Puerto AMQP
+      - "15672:15672"  # Puerto de la interfaz de administración
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  db_data:
+  rabbitmq_data:
+

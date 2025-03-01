@@ -1,0 +1,31 @@
+framework:
+    messenger:
+        buses:
+            app.bus:
+                default_middleware: true
+                middleware:
+                    - validation
+                    - doctrine_transaction
+        routing:
+            # Aquí no deberías poner las clases de eventos directamente
+            'App\Domain\Order\Event\OrderCreatedEvent': 'order_created_queue'
+            'App\Domain\Order\Event\OrderStatusUpdatedEvent': 'order_status_updated_queue'
+        transports:
+            order_created_queue:
+                dsn: 'rabbitmq://rabbitmq:5672/%2f'
+                options:
+                    exchange:
+                        name: 'order-events'
+            order_status_updated_queue:
+                dsn: 'rabbitmq://rabbitmq:5672/%2f'
+                options:
+                    exchange:
+                        name: 'order-events'
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'
