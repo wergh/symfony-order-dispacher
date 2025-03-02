@@ -5,15 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="811d1e6d-7b7d-48fc-88f9-1a206f1b74b1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ipglobal.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ipglobal.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/messenger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/messenger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Order/Sequencer/OrderProcessingSequencer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Sequencer/OrderProcessingSequencer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +120,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "php.override.implement.member.chooser.php.doc": "NONE",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -148,7 +147,7 @@
       <updated>1740664830913</updated>
       <workItem from="1740664832574" duration="5374000" />
       <workItem from="1740846722527" duration="10616000" />
-      <workItem from="1740876107428" duration="901000" />
+      <workItem from="1740876107428" duration="5545000" />
     </task>
     <servers />
   </component>

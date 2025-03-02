@@ -88,6 +88,12 @@ class Order
         $this->concepts->add($concept);
     }
 
+    public function getConcepts(): Collection
+    {
+        return $this->concepts;
+    }
+
+
     public function totalAmount(): float
     {
         return array_sum($this->concepts->map(fn($concept) => $concept->total())->toArray());
@@ -95,21 +101,14 @@ class Order
 
     public function markAsAccepted(): static
     {
-        if ($this->status !== OrderStatusEnum::APPROVED) {
-            $this->recordEvent(OrderStatusUpdatedEvent::fromOrder($this));
-        }
         $this->status = OrderStatusEnum::APPROVED;
-
         return $this;
     }
 
     public function markAsRejected(): static
     {
-        if ($this->status !== OrderStatusEnum::REJECTED) {
-            $this->recordEvent(OrderStatusUpdatedEvent::fromOrder($this));
-        }
-        $this->status = OrderStatusEnum::REJECTED;
 
+        $this->status = OrderStatusEnum::REJECTED;
         return $this;
     }
 

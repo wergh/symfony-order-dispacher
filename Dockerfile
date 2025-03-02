@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     librabbitmq-dev \
+    supervisor \
     && docker-php-ext-install \
     pdo_mysql \
     zip \
@@ -29,10 +30,14 @@ WORKDIR /var/www/html
 # Copiar archivos de la aplicación
 COPY . /var/www/html
 
+# Configurar Supervisor
+COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 # Establecer permisos
 RUN chown -R www-data:www-data /var/www/html
 
 # Exponer puerto
 EXPOSE 9000
 
-CMD ["php-fpm"]
+# Comando para iniciar PHP-FPM y Supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
