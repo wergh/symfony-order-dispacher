@@ -12,15 +12,21 @@ framework:
             'App\Domain\Order\Event\OrderStatusUpdatedEvent': 'order_status_updated_queue'
         transports:
             order_created_queue:
-                dsn: 'rabbitmq://rabbitmq:5672/%2f'
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     exchange:
                         name: 'order-events'
+                        type: direct
+                    queues:
+                        order_created_queue: ~
             order_status_updated_queue:
-                dsn: 'rabbitmq://rabbitmq:5672/%2f'
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     exchange:
                         name: 'order-events'
+                        type: direct
+                    queues:
+                        order_status_updated_queue: ~
 
 # when@test:
 #    framework:

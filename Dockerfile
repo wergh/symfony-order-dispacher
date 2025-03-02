@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libonig-dev \
     libxml2-dev \
+    librabbitmq-dev \
     && docker-php-ext-install \
     pdo_mysql \
     zip \
@@ -15,7 +16,9 @@ RUN apt-get update && apt-get install -y \
     opcache \
     sockets \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -33,4 +36,3 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 9000
 
 CMD ["php-fpm"]
-
