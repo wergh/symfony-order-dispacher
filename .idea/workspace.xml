@@ -7,62 +7,11 @@
     <list default="true" id="811d1e6d-7b7d-48fc-88f9-1a206f1b74b1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/messenger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/messenger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/DTO/ClientDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/DTO/ClientCreateDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/Service/ClientFactoryService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/Service/ClientFactoryService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/Service/CreateClientService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/Service/CreateClientService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/UseCase/CreateClientUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/UseCase/CreateClientUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/UseCase/SendNotificationToClientUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/UseCase/SendNotificationToClientUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Client/Validator/CreateClientDTOValidator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Client/Validator/CreateClientDtoValidator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/Command/CreateOrderCommandHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Command/CreateOrderCommandHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/DTO/OrderConceptDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/DTO/OrderConceptDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/DTO/OrderDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/DTO/CreateOrderDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/DTO/OrderProcessedDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/DTO/OrderProcessedDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/DTO/OrderProcessorDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/DTO/OrderProcessorDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/Sequencer/OrderProcessingSequencer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Sequencer/OrderProcessingSequencer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application/Order/Service/NotificateOrderResultService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Service/NotificateOrderResultService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/Service/OrderProcessorService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Service/OrderProcessorService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/CreateOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/CreateOrderUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/GetOrderToProcessUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/GetOrderToProcessUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/RejectOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/RejectOrderUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/ValidateStockUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/ValidateStockUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/DTO/ProductDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/DTO/CreateProductDto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/DTO/UpdateProductStockDTO.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/DTO/UpdateProductStockDTO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/Service/CreateProductService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/Service/CreateProductService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/Service/ProductFactoryService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/Service/ProductFactoryService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/Service/UpdateProductStockService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/Service/UpdateProductStockService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/UseCase/CreateProductUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/UseCase/CreateProductUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/UseCase/UpdateProductStockUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/UseCase/UpdateProductStockUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/Validator/CreateProductDTOValidator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/Validator/CreateProductDtoValidator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Product/Validator/UpdateProductStockDTOValidator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Product/Validator/UpdateProductStockDtoValidator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Client/Entity/Client.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Client/Entity/Client.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Client/Repository/ClientRepositoryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Client/Repository/ClientRepositoryInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Order/Event/OrderCreatedEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Event/OrderCreatedEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Order/Enum/OrderStatusEnum.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Enum/OrderStatusEnum.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Domain/Order/Event/OrderStatusUpdatedEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Event/OrderStatusUpdatedEvent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Order/Repository/OrderRepositoryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Repository/OrderRepositoryInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Order/ValueObject/OrderConcept.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/ValueObject/OrderConcept.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Product/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Product/Entity/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Product/Repository/ProductRepositoryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Product/Repository/ProductRepositoryInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Shared/Interface/LoggerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Shared/Interface/LoggerInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Shared/Interface/RepositoryFactoryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Shared/Interface/RepositoryFactoryInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/AbstractCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/AbstractCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/CreateClienteCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/CreateClienteCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/CreateOrderCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/CreateOrderCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/CreateProductCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/CreateProductCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/UpdateProductStockCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/UpdateProductStockCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/DataFixtures/ClientFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/DataFixtures/ClientFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Logger/MonologAdapter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Logger/MonologAdapter.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Infrastructure/Messenger/Consumer/OrderCreatedConsumer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Messenger/Consumer/OrderCreatedConsumer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Messenger/Consumer/OrderStatusUpdatedConsumer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Messenger/Consumer/OrderStatusUpdatedConsumer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/Client/DoctrineClientRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/Client/DoctrineClientRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/EventListener/OrderEntityListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/EventListener/OrderEntityListener.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/Product/DoctrineProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Persistence/Doctrine/Product/DoctrineProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Factory/DoctrineRepositoryFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Persistence/Factory/DoctrineRepositoryFactory.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,6 +164,7 @@
       <workItem from="1740846722527" duration="10616000" />
       <workItem from="1740876107428" duration="19283000" />
       <workItem from="1740932644379" duration="20484000" />
+      <workItem from="1741002631111" duration="2555000" />
     </task>
     <servers />
   </component>

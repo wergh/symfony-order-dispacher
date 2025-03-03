@@ -13,7 +13,6 @@ class NotificateOrderResultService
 
     public function __construct(
         private SendNotificationToClientUseCase $sendNotificationToClientUseCase,
-        private LoggerInterface                 $logger
     )
     {
     }

@@ -65,7 +65,7 @@ class Order
 
     public function isFinished(): bool
     {
-        return OrderStatusEnum::APPROVED === $this->status || OrderStatusEnum::REJECTED === $this->status;
+        return OrderStatusEnum::PENDING != $this->status;
     }
 
     public function getClient(): Client
@@ -111,6 +111,12 @@ class Order
     {
 
         $this->status = OrderStatusEnum::REJECTED;
+        return $this;
+    }
+
+    public function markAsFailed(): static
+    {
+        $this->status = OrderStatusEnum::FAILED;
         return $this;
     }
 

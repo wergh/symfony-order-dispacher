@@ -27,6 +27,7 @@ final class OrderStatusUpdatedEvent implements DomainEventInterface
         $message = match ($order->getStatus()) {
             OrderStatusEnum::APPROVED => 'Tu pedido ha sido aceptado y está en proceso.',
             OrderStatusEnum::REJECTED => 'Lo sentimos, tu pedido ha sido rechazado.',
+            OrderStatusEnum::FAILED => 'Lo sentimos, tu pedido ha fallado por un error inesperado y por lo tanto se ha cancelado. Vuelva a intentarlo de nuevo',
             default => throw new LogicException('Este evento solo debe dispararse cuando el pedido se acepta o rechaza.')
         };
 

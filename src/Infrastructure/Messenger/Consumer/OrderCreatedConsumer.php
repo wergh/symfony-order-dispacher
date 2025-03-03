@@ -15,12 +15,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class OrderCreatedConsumer
 {
-    private MonitoringInterface $monitoring;
 
     public function __construct(
         private OrderProcessorService $orderProcessorService,
         private LoggerInterface       $logger,
-        MonitoringInterface           $monitoring
+        private MonitoringInterface   $monitoring
     )
     {
         $this->monitoring = $monitoring;
