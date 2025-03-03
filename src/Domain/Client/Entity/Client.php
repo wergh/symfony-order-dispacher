@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Client\Entity;
 
-use App\Domain\Client\Repository\ClientRepository;
 use App\Domain\Order\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

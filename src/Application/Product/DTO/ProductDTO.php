@@ -6,7 +6,7 @@ namespace App\Application\Product\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProductDTO
+final class ProductDTO
 {
 
 

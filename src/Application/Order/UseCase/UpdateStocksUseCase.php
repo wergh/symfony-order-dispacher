@@ -5,7 +5,7 @@ namespace App\Application\Order\UseCase;
 use App\Domain\Order\Entity\Order;
 use App\Domain\Shared\Exception\EntityNotFoundException;
 use App\Domain\Shared\Interface\RepositoryFactoryInterface;
-use App\Domain\Shared\Logger\LoggerInterface;
+use App\Domain\Shared\Interface\LoggerInterface;
 
 final class UpdateStocksUseCase
 {

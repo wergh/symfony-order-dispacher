@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Entity;
 
-use App\Repository\ProductRepository;
+use App\Domain\Product\Exception\InsufficientStockException;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

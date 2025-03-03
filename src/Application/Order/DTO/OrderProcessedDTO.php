@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Order\DTO;
 
-class OrderProcessedDTO
+final class OrderProcessedDTO
 {
 
     public int $orderId;

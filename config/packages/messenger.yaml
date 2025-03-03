@@ -7,7 +7,6 @@ framework:
                     - validation
                     - doctrine_transaction
         routing:
-            # Aquí no deberías poner las clases de eventos directamente
             'App\Domain\Order\Event\OrderCreatedEvent': 'order_created_queue'
             'App\Domain\Order\Event\OrderStatusUpdatedEvent': 'order_status_updated_queue'
         transports:
@@ -15,7 +14,7 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     exchange:
-                        name: 'order-events'
+                        name: 'order_created'
                         type: direct
                     queues:
                         order_created_queue: ~
@@ -23,11 +22,11 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     exchange:
-                        name: 'order-events'
+                        name: 'order_status_updated'
                         type: direct
                     queues:
                         order_status_updated_queue: ~
-
+##
 # when@test:
 #    framework:
 #        messenger:

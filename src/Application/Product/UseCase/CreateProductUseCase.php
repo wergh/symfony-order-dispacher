@@ -16,10 +16,8 @@ final class CreateProductUseCase
     {
         $productRepository = $this->repositoryFactory->createProductRepository();
 
-        // Transformar el DTO en una entidad de dominio
         $product = new Product($dto->name, $dto->price, $dto->tax, $dto->stock);
 
-        // Persistir la entidad
         $productRepository->save($product);
     }
 }

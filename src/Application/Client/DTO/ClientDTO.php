@@ -6,7 +6,7 @@ namespace App\Application\Client\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ClientDTO
+final class ClientDTO
 {
 
     #[Assert\Type('string')]

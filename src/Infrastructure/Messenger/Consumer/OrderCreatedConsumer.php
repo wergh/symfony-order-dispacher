@@ -7,7 +7,7 @@ namespace App\Infrastructure\Messenger\Consumer;
 use App\Application\Order\DTO\OrderProcessorDTO;
 use App\Application\Order\Service\OrderProcessorService;
 use App\Domain\Order\Event\OrderCreatedEvent;
-use App\Domain\Shared\Logger\LoggerInterface;
+use App\Domain\Shared\Interface\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

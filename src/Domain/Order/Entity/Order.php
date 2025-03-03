@@ -36,6 +36,9 @@ class Order
     #[ORM\Column]
     private DateTime $createdAt;
 
+    #[ORM\Column]
+    private bool $processed;
+
     private array $domainEvents = [];
 
     public function __construct()
@@ -43,6 +46,7 @@ class Order
         $this->status = OrderStatusEnum::PENDING;
         $this->concepts = new ArrayCollection();
         $this->createdAt = Carbon::now();
+        $this->processed = false;
 
     }
 
@@ -117,15 +121,14 @@ class Order
         return ($this->status === OrderStatusEnum::APPROVED);
     }
 
-    private function recordEvent(DomainEventInterface $event): void
+    public function isProcessed(): bool
     {
-        $this->domainEvents[] = $event;
+        return $this->processed;
     }
 
-    public function pullEvents(): array
+    public function markAsProcessed(): static
     {
-        $events = $this->domainEvents;
-        $this->domainEvents = [];
-        return $events;
+        $this->processed = true;
+        return $this;
     }
 }

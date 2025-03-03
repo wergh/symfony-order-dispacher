@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Order\Service;
 
 use App\Application\Client\UseCase\SendNotificationToClientUseCase;
 use App\Application\Order\DTO\OrderProcessedDTO;
-use App\Domain\Shared\Logger\LoggerInterface;
+use App\Domain\Shared\Interface\LoggerInterface;
 
 class NotificateOrderResultService
 {

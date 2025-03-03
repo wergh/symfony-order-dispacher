@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'app:create-order',
@@ -24,12 +25,15 @@ use Symfony\Component\Console\Question\Question;
 )]
 class CreateOrderCommand extends AbstractCommand
 {
+    private bool $checkStockBeforeAdding;
     public function __construct(
         private DoctrineClientRepository $clientRepository,
         private DoctrineProductRepository $productRepository,
-        private CreateOrderCommandHandler $handler
+        private CreateOrderCommandHandler $handler,
+        private ParameterBagInterface $params
     ) {
         parent::__construct();
+        $this->checkStockBeforeAdding = (bool) $params->get('check_stock_before_adding_product');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -110,8 +114,10 @@ class CreateOrderCommand extends AbstractCommand
                 if (!is_numeric($value) || (int)$value <= 0) {
                     throw new \RuntimeException('La cantidad debe ser un número positivo.');
                 }
-                if ((int)$value > $selectedProduct->getStock()) {
-                    throw new \RuntimeException('Stock insuficiente.');
+                if ($this->checkStockBeforeAdding) {
+                    if ((int)$value > $selectedProduct->getStock()) {
+                        throw new \RuntimeException('Stock insuficiente.');
+                    }
                 }
                 return (int)$value;
             });

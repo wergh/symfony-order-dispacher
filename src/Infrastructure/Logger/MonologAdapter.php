@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Logger;
 
-use App\Domain\Shared\Logger\LoggerInterface;
+use App\Domain\Shared\Interface\LoggerInterface;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 class MonologAdapter implements LoggerInterface
