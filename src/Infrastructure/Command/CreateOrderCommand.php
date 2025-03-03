@@ -22,6 +22,16 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * Command to create an order via the console.
+ *
+ * This command will prompt the user to select a client and add products to an order.
+ * It checks if stock is sufficient before adding products and allows the user to finalize the order.
+ * If any validation or entity not found errors occur, appropriate messages are shown.
+ * The order creation process is handled by the `CreateOrderCommandHandler`.
+ *
+ * @package App\Infrastructure\Command
+ */
 #[AsCommand(
     name: 'app:create-order',
     description: 'Crear una orden desde la consola',
@@ -31,6 +41,15 @@ class CreateOrderCommand extends AbstractCommand
     private bool $checkStockBeforeAdding;
     private MonitoringInterface $monitoring;
 
+    /**
+     * CreateOrderCommand constructor.
+     *
+     * @param DoctrineClientRepository  $clientRepository  Repository to fetch clients.
+     * @param DoctrineProductRepository $productRepository Repository to fetch products.
+     * @param CreateOrderCommandHandler $handler  Handler to process order creation.
+     * @param ParameterBagInterface     $params   Parameter bag for configuration.
+     * @param MonitoringInterface       $monitoring Monitoring service for error capturing.
+     */
     public function __construct(
         private DoctrineClientRepository  $clientRepository,
         private DoctrineProductRepository $productRepository,
@@ -44,6 +63,18 @@ class CreateOrderCommand extends AbstractCommand
         $this->monitoring = $monitoring;
     }
 
+    /**
+     * Executes the order creation process.
+     *
+     * This method interacts with the user to select a client and products,
+     * validate stock, and creates an order. If any error occurs during
+     * the creation process, it will be captured and reported.
+     *
+     * @param InputInterface  $input  The console input interface.
+     * @param OutputInterface $output The console output interface.
+     *
+     * @return int The command exit status: Command::SUCCESS on success, Command::FAILURE on failure.
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -92,7 +123,7 @@ class CreateOrderCommand extends AbstractCommand
             }
 
             if (empty($productChoices)) {
-                break; // No hay más productos disponibles
+                break;
             }
 
             $productChoices[0] = 'Terminar';
@@ -104,9 +135,7 @@ class CreateOrderCommand extends AbstractCommand
                 break;
             }
 
-
             $productId = array_search($productName, $productChoices, true);
-
 
             $selectedProduct = $products->filter(function ($product) use ($productId) {
                 return $product->getId() === $productId;
@@ -166,7 +195,5 @@ class CreateOrderCommand extends AbstractCommand
             $this->monitoring->captureException($e);
             return Command::FAILURE;
         }
-
-
     }
 }

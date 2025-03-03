@@ -9,14 +9,29 @@ use App\Domain\Shared\Exception\EntityNotFoundException;
 use App\Domain\Shared\Interface\LoggerInterface;
 use App\Domain\Shared\Interface\RepositoryFactoryInterface;
 
+/**
+ * Use case for sending a notification to the client after an order is processed.
+ */
 final class SendNotificationToClientUseCase
 {
-
+    /**
+     * SendNotificationToClientUseCase constructor.
+     *
+     * @param LoggerInterface           $logger          Logger for logging notifications.
+     * @param RepositoryFactoryInterface $repositoryFactory Factory for creating the order repository.
+     */
     public function __construct(private LoggerInterface $logger, private RepositoryFactoryInterface $repositoryFactory)
     {
     }
 
-    public function execute(OrderProcessedDto $orderProcessedDTO)
+    /**
+     * Executes the process of sending a notification to the client based on order status.
+     *
+     * @param OrderProcessedDto $orderProcessedDTO The DTO containing the processed order data.
+     *
+     * @throws EntityNotFoundException If the order is not found.
+     */
+    public function execute(OrderProcessedDto $orderProcessedDTO): void
     {
         $orderRepository = $this->repositoryFactory->createOrderRepository();
 
@@ -27,11 +42,9 @@ final class SendNotificationToClientUseCase
 
         /** Aquí en vez del logger se podría despachar el evento de enviar un email */
         if ($order->isAccepted()) {
-            $this->logger->info('El pedido ha finalizado con existo para el cliente ' . $order->getClient()->getName());
+            $this->logger->info('The order has been successfully completed for client ' . $order->getClient()->getName());
         } else {
-            $this->logger->error('El pedido no ha sido denegado debido a: ' . $orderProcessedDTO->message);
+            $this->logger->error('The order has been denied due to: ' . $orderProcessedDTO->message);
         }
-
     }
-
 }

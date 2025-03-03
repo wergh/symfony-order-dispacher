@@ -26,6 +26,14 @@ final class CreateProductDto
     #[Assert\Positive(message: 'El stock debe ser un número positivo.')]
     public int $stock;
 
+    /**
+     * CreateProductDto constructor.
+     *
+     * @param string $name The name of the product.
+     * @param float  $price The price of the product.
+     * @param int    $tax The tax rate of the product.
+     * @param int    $stock The stock quantity of the product.
+     */
     public function __construct(
         string $name,
         float  $price,

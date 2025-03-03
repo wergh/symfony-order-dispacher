@@ -18,6 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
+/**
+ * Command to update the stock of a product.
+ */
 #[AsCommand(
     name: 'app:update-stock',
     description: 'Updatea el stock de un producto',
@@ -26,6 +29,13 @@ class UpdateProductStockCommand extends AbstractCommand
 {
     private MonitoringInterface $monitoring;
 
+    /**
+     * Constructor for the UpdateProductStockCommand.
+     *
+     * @param DoctrineProductRepository $productRepository
+     * @param UpdateProductStockService $updateProductStockService
+     * @param MonitoringInterface $monitoring
+     */
     public function __construct(
         private DoctrineProductRepository $productRepository,
         private UpdateProductStockService $updateProductStockService,
@@ -36,9 +46,15 @@ class UpdateProductStockCommand extends AbstractCommand
         $this->monitoring = $monitoring;
     }
 
+    /**
+     * Executes the command to update the stock of a product.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $helper = $this->getHelper('question');
 
         $products = $this->productRepository->all();
@@ -68,13 +84,11 @@ class UpdateProductStockCommand extends AbstractCommand
         }
 
         try {
-
             $productDTo = new UpdateProductStockDTO($selectedProduct->getId(), $stock);
 
             $this->updateProductStockService->execute($productDTo);
 
             $output->writeln('<info>Stock acutalizado con éxito.</info>');
-
         } catch (ValidationException $e) {
             $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
             return Command::FAILURE;

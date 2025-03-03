@@ -7,17 +7,27 @@ namespace App\Application\Order\UseCase;
 use App\Domain\Order\Entity\Order;
 use App\Domain\Shared\Interface\LoggerInterface;
 use App\Domain\Shared\Interface\RepositoryFactoryInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * Use case for accepting an order and saving it in the repository.
+ */
 final class AcceptOrderUseCase
 {
-    private MessageBusInterface $bus;
-
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory, private LoggerInterface $logger, MessageBusInterface $bus)
+    /**
+     * AcceptOrderUseCase constructor.
+     *
+     * @param RepositoryFactoryInterface $repositoryFactory The factory to create repositories for domain entities.
+     * @param LoggerInterface $logger The logger for logging events.
+     */
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory, private LoggerInterface $logger)
     {
-        $this->bus = $bus;
     }
 
+    /**
+     * Executes the process of accepting an order.
+     *
+     * @param Order $order The order to be accepted.
+     */
     public function execute(Order $order): void
     {
         $orderRepository = $this->repositoryFactory->createOrderRepository();

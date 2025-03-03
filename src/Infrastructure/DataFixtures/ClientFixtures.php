@@ -8,13 +8,26 @@ use App\Application\Client\Service\ClientFactoryService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ * Fixture for loading client data.
+ */
 class ClientFixtures extends Fixture
 {
 
+    /**
+     * ClientFixtures constructor.
+     *
+     * @param ClientFactoryService $clientFactoryService
+     */
     public function __construct(private ClientFactoryService $clientFactoryService)
     {
     }
 
+    /**
+     * Load sample clients into the database.
+     *
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager): void
     {
         $client = $this->clientFactoryService->create("John", "Doe");

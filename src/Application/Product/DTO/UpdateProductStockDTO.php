@@ -18,6 +18,12 @@ final class UpdateProductStockDTO
     #[Assert\Positive(message: 'El stock debe ser un número positivo.')]
     public int $stock;
 
+    /**
+     * UpdateProductStockDTO constructor.
+     *
+     * @param int $id The product ID.
+     * @param int $stock The stock quantity to update.
+     */
     public function __construct(
         int $id,
         int $stock,
