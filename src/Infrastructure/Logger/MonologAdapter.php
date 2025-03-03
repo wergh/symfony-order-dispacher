@@ -9,7 +9,9 @@ use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 class MonologAdapter implements LoggerInterface
 {
-    public function __construct(private PsrLoggerInterface $logger) {}
+    public function __construct(private PsrLoggerInterface $logger)
+    {
+    }
 
     public function info(string $message, array $context = []): void
     {

@@ -10,7 +10,9 @@ use App\Domain\Client\Factory\ClientFactory;
 class ClientFactoryService
 {
 
-    public function __construct(private ClientFactory $clientFactory) {}
+    public function __construct(private ClientFactory $clientFactory)
+    {
+    }
 
     public function create(string $name, string $surname): Client
     {

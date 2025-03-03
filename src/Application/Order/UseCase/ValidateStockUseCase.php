@@ -4,12 +4,15 @@ namespace App\Application\Order\UseCase;
 
 use App\Domain\Order\Entity\Order;
 use App\Domain\Product\Exception\InsufficientStockException;
+use App\Domain\Shared\Exception\EntityNotFoundException;
 use App\Domain\Shared\Interface\RepositoryFactoryInterface;
 
 final class ValidateStockUseCase
 {
 
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory) {}
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
+    {
+    }
 
     public function execute(Order $order): void
     {
@@ -19,7 +22,7 @@ final class ValidateStockUseCase
             if (null === $product) {
                 throw new EntityNotFoundException('Product not found');
             }
-            if(!$product->hasEnoughStock($concept->getQuantity())) {
+            if (!$product->hasEnoughStock($concept->getQuantity())) {
                 throw new InsufficientStockException('Insufficient stock for product: ' . $product->getName());
             }
         }

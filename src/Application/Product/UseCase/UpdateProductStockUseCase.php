@@ -10,7 +10,11 @@ use App\Domain\Shared\Interface\RepositoryFactoryInterface;
 
 final class UpdateProductStockUseCase
 {
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory) {}
+
+
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
+    {
+    }
 
     public function execute(UpdateProductStockDTO $dto): void
     {
@@ -20,11 +24,8 @@ final class UpdateProductStockUseCase
         if (!$product) {
             throw new EntityNotFoundException('Product not found');
         }
-
-
         $product->setStock($dto->stock);
 
         $productRepository->save($product);
-
     }
 }

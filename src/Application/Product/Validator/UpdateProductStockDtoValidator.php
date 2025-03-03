@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Application\Product\Validator;
 
 use App\Application\Product\DTO\UpdateProductStockDTO;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateProductStockDTOValidator
+class UpdateProductStockDtoValidator
 {
 
-    public function __construct(private ValidatorInterface $validator) {}
+    public function __construct(private ValidatorInterface $validator)
+    {
+    }
 
     public function validate(UpdateProductStockDTO $dto): void
     {

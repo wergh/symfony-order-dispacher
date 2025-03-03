@@ -6,9 +6,9 @@ namespace App\Infrastructure\Persistence\Doctrine\Client;
 
 use App\Domain\Client\Entity\Client;
 use App\Domain\Client\Repository\ClientRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineClientRepository implements ClientRepositoryInterface
 {

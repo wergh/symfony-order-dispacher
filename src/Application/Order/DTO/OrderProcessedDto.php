@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Order\DTO;
 
-final class OrderProcessedDTO
+final class OrderProcessedDto
 {
 
     public int $orderId;

@@ -30,7 +30,7 @@ class Product
 
     public function __construct(string $name, float $price, int $tax, int $stock)
     {
-        $this->name= $name;
+        $this->name = $name;
         $this->price = $price;
         $this->tax = $tax;
         $this->stock = $stock;
@@ -89,11 +89,6 @@ class Product
         return $this;
     }
 
-    public function hasEnoughStock(int $quantity): bool
-    {
-        return $this->stock >= $quantity;
-    }
-
     public function decreaseStock(int $quantity): void
     {
         if (!$this->hasEnoughStock($quantity)) {
@@ -101,5 +96,10 @@ class Product
         }
 
         $this->stock -= $quantity;
+    }
+
+    public function hasEnoughStock(int $quantity): bool
+    {
+        return $this->stock >= $quantity;
     }
 }

@@ -6,15 +6,17 @@ namespace App\Application\Product\Service;
 
 use App\Application\Product\DTO\UpdateProductStockDTO;
 use App\Application\Product\UseCase\UpdateProductStockUseCase;
-use App\Application\Product\Validator\UpdateProductStockDTOValidator;
+use App\Application\Product\Validator\UpdateProductStockDtoValidator;
 
 class UpdateProductStockService
 {
 
     public function __construct(
-        private UpdateProductStockDTOValidator $dtoValidator,
-        private UpdateProductStockUseCase $updateProductStockUseCase
-    ) {}
+        private UpdateProductStockDtoValidator $dtoValidator,
+        private UpdateProductStockUseCase      $updateProductStockUseCase
+    )
+    {
+    }
 
     public function execute(UpdateProductStockDTO $updateProductStockDTO): void
     {

@@ -6,7 +6,7 @@ namespace App\Application\Product\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class ProductDTO
+final class CreateProductDto
 {
 
 
@@ -28,10 +28,11 @@ final class ProductDTO
 
     public function __construct(
         string $name,
-        float $price,
-        int $tax,
-        int $stock,
-    ) {
+        float  $price,
+        int    $tax,
+        int    $stock,
+    )
+    {
         $this->name = $name;
         $this->price = $price;
         $this->tax = $tax;

@@ -6,9 +6,7 @@ namespace App\Domain\Order\Entity;
 
 use App\Domain\Client\Entity\Client;
 use App\Domain\Order\Enum\OrderStatusEnum;
-use App\Domain\Order\Event\OrderStatusUpdatedEvent;
 use App\Domain\Order\ValueObject\OrderConcept;
-use App\Domain\Shared\Event\DomainEventInterface;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

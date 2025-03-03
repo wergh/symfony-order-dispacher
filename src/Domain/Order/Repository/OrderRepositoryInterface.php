@@ -10,6 +10,7 @@ interface OrderRepositoryInterface
 {
 
     public function findById(int $id): ?Order;
+
     public function save(Order $order): void;
 
 }

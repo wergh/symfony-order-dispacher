@@ -16,7 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class DoctrineRepositoryFactory implements RepositoryFactoryInterface
 {
 
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
 
     public function createClientRepository(): ClientRepositoryInterface
     {

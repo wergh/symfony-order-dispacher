@@ -5,10 +5,11 @@ framework:
                 default_middleware: true
                 middleware:
                     - validation
-                    - doctrine_transaction
+                    #- doctrine_transaction
         routing:
             'App\Domain\Order\Event\OrderCreatedEvent': 'order_created_queue'
             'App\Domain\Order\Event\OrderStatusUpdatedEvent': 'order_status_updated_queue'
+        failure_transport: failed
         transports:
             order_created_queue:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
@@ -18,6 +19,12 @@ framework:
                         type: direct
                     queues:
                         order_created_queue: ~
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 0
+                failure_transport: failed
             order_status_updated_queue:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
@@ -26,6 +33,18 @@ framework:
                         type: direct
                     queues:
                         order_status_updated_queue: ~
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 0
+                failure_transport: failed
+            failed:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        failed_messages: ~
+
 ##
 # when@test:
 #    framework:

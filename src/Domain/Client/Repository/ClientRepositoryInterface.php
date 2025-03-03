@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
 interface ClientRepositoryInterface
 {
     public function all(): Collection;
+
     public function findById(int $id): ?Client;
+
     public function save(Client $client): void;
 }

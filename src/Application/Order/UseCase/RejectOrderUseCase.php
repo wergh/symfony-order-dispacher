@@ -9,7 +9,9 @@ use App\Domain\Shared\Interface\RepositoryFactoryInterface;
 
 final class RejectOrderUseCase
 {
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory) {}
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
+    {
+    }
 
     public function execute(Order $order): void
     {

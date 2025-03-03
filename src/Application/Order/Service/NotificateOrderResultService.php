@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Order\Service;
 
 use App\Application\Client\UseCase\SendNotificationToClientUseCase;
-use App\Application\Order\DTO\OrderProcessedDTO;
+use App\Application\Order\DTO\OrderProcessedDto;
 use App\Domain\Shared\Interface\LoggerInterface;
 
 class NotificateOrderResultService
@@ -13,10 +13,12 @@ class NotificateOrderResultService
 
     public function __construct(
         private SendNotificationToClientUseCase $sendNotificationToClientUseCase,
-        private LoggerInterface $logger
-    ) {}
+        private LoggerInterface                 $logger
+    )
+    {
+    }
 
-    public function execute(OrderProcessedDTO $orderProcessedDTO)
+    public function execute(OrderProcessedDto $orderProcessedDTO)
     {
         $this->sendNotificationToClientUseCase->execute($orderProcessedDTO);
     }

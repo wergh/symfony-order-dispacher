@@ -12,7 +12,9 @@ interface RepositoryFactoryInterface
 {
 
     public function createClientRepository(): ClientRepositoryInterface;
+
     public function createOrderRepository(): OrderRepositoryInterface;
+
     public function createProductRepository(): ProductRepositoryInterface;
 
 }

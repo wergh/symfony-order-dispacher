@@ -21,7 +21,8 @@ final class UpdateProductStockDTO
     public function __construct(
         int $id,
         int $stock,
-    ) {
+    )
+    {
         $this->id = $id;
         $this->stock = $stock;
     }

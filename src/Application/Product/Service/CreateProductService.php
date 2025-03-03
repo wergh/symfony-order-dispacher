@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Service;
 
-use App\Application\Product\DTO\ProductDTO;
+use App\Application\Product\DTO\CreateProductDto;
 use App\Application\Product\UseCase\CreateProductUseCase;
-use App\Application\Product\Validator\CreateProductDTOValidator;
+use App\Application\Product\Validator\CreateProductDtoValidator;
 
 class CreateProductService
 {
 
     public function __construct(
-        private CreateProductDTOValidator $dtoValidator,
-        private CreateProductUseCase $createProductUseCase
-    ) {}
-
-    public function execute(ProductDTO $productDTO): void
+        private CreateProductDtoValidator $dtoValidator,
+        private CreateProductUseCase      $createProductUseCase
+    )
     {
-            $this->dtoValidator->validate($productDTO);
+    }
 
-            $this->createProductUseCase->execute($productDTO);
+    public function execute(CreateProductDto $productDTO): void
+    {
+        $this->dtoValidator->validate($productDTO);
+
+        $this->createProductUseCase->execute($productDTO);
     }
 }

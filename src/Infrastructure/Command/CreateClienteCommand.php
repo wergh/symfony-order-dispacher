@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Command;
 
-use App\Application\Client\DTO\ClientDTO;
+use App\Application\Client\DTO\ClientCreateDto;
 use App\Application\Client\Service\CreateClientService;
+use App\Domain\Shared\Interface\MonitoringInterface;
 use Cassandra\Exception\ValidationException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,9 +20,12 @@ use Symfony\Component\Console\Question\Question;
 )]
 class CreateClienteCommand extends AbstractCommand
 {
-    public function __construct(private CreateClientService $createClientService)
+    private MonitoringInterface $monitoring;
+
+    public function __construct(private CreateClientService $createClientService, MonitoringInterface $monitoring)
     {
         parent::__construct();
+        $this->monitoring = $monitoring;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -37,15 +41,14 @@ class CreateClienteCommand extends AbstractCommand
         }
 
         try {
-            // Crear el DTO
-            $clientDTO = new ClientDTO($nombre, $apellido);
+            $clientDTO = new ClientCreateDto($nombre, $apellido);
 
-            // Llamar al servicio de aplicación
             $this->createClientService->execute($clientDTO);
 
             $output->writeln('<info>Cliente creado con éxito.</info>');
         } catch (ValidationException $e) {
             $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            $this->monitoring->captureException($e);
             return Command::FAILURE;
         }
 

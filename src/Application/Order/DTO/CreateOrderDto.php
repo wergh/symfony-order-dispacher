@@ -6,7 +6,7 @@ namespace App\Application\Order\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class OrderDTO
+final class CreateOrderDto
 {
     #[Assert\NotBlank(message: 'El cliente no puede estar vacío.')]
     #[Assert\Positive(message: 'El ID del cliente debe ser positivo.')]
@@ -18,7 +18,7 @@ final class OrderDTO
 
     /**
      * @param int $clientId
-     * @param OrderConceptDTO[] $concepts
+     * @param OrderConceptDto[] $concepts
      */
     public function __construct(int $clientId, array $concepts)
     {

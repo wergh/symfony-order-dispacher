@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Command;
 
-use App\Application\Product\DTO\ProductDTO;
+use App\Application\Product\DTO\CreateProductDto;
 use App\Application\Product\DTO\UpdateProductStockDTO;
 use App\Application\Product\Service\UpdateProductStockService;
 use App\Domain\Shared\Exception\ValidationException;
+use App\Domain\Shared\Interface\MonitoringInterface;
 use App\Infrastructure\Persistence\Doctrine\Product\DoctrineProductRepository;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,10 +24,16 @@ use Symfony\Component\Console\Question\Question;
 )]
 class UpdateProductStockCommand extends AbstractCommand
 {
-    public function __construct(private DoctrineProductRepository $productRepository,
-                                 private UpdateProductStockService $updateProductStockService)
+    private MonitoringInterface $monitoring;
+
+    public function __construct(
+        private DoctrineProductRepository $productRepository,
+        private UpdateProductStockService $updateProductStockService,
+        MonitoringInterface               $monitoring
+    )
     {
         parent::__construct();
+        $this->monitoring = $monitoring;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -69,6 +77,10 @@ class UpdateProductStockCommand extends AbstractCommand
 
         } catch (ValidationException $e) {
             $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            return Command::FAILURE;
+        } catch (Exception $e) {
+            $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            $this->monitoring->captureException($e);
             return Command::FAILURE;
         }
 

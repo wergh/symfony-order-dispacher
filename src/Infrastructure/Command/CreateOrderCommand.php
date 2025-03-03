@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Infrastructure\Command;
 
 use App\Application\Order\Command\CreateOrderCommandHandler;
-use App\Application\Order\DTO\OrderConceptDTO;
-use App\Application\Order\DTO\OrderDTO;
+use App\Application\Order\DTO\OrderConceptDto;
+use App\Application\Order\DTO\CreateOrderDto;
 use App\Domain\Shared\Exception\EntityNotFoundException;
 use App\Domain\Shared\Exception\ValidationException;
+use App\Domain\Shared\Interface\MonitoringInterface;
 use App\Infrastructure\Persistence\Doctrine\Client\DoctrineClientRepository;
 use App\Infrastructure\Persistence\Doctrine\Product\DoctrineProductRepository;
+use Exception;
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,14 +29,19 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class CreateOrderCommand extends AbstractCommand
 {
     private bool $checkStockBeforeAdding;
+    private MonitoringInterface $monitoring;
+
     public function __construct(
-        private DoctrineClientRepository $clientRepository,
+        private DoctrineClientRepository  $clientRepository,
         private DoctrineProductRepository $productRepository,
         private CreateOrderCommandHandler $handler,
-        private ParameterBagInterface $params
-    ) {
+        private ParameterBagInterface     $params,
+        MonitoringInterface               $monitoring
+    )
+    {
         parent::__construct();
-        $this->checkStockBeforeAdding = (bool) $params->get('check_stock_before_adding_product');
+        $this->checkStockBeforeAdding = (bool)$params->get('check_stock_before_adding_product');
+        $this->monitoring = $monitoring;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -112,11 +120,11 @@ class CreateOrderCommand extends AbstractCommand
             $quantityQuestion = new Question('<question>Ingrese la cantidad:</question>');
             $quantityQuestion->setValidator(function ($value) use ($selectedProduct) {
                 if (!is_numeric($value) || (int)$value <= 0) {
-                    throw new \RuntimeException('La cantidad debe ser un número positivo.');
+                    throw new RuntimeException('La cantidad debe ser un número positivo.');
                 }
                 if ($this->checkStockBeforeAdding) {
                     if ((int)$value > $selectedProduct->getStock()) {
-                        throw new \RuntimeException('Stock insuficiente.');
+                        throw new RuntimeException('Stock insuficiente.');
                     }
                 }
                 return (int)$value;
@@ -135,12 +143,12 @@ class CreateOrderCommand extends AbstractCommand
         $orderConceptDtos = [];
 
         foreach ($selectedProducts as $product) {
-            $orderConceptDtos[] = new OrderConceptDTO(
+            $orderConceptDtos[] = new OrderConceptDto(
                 $product['product']->getId(),
                 $product['quantity']
             );
         }
-        $createOrderDto = new OrderDTO($selectedClientId, $orderConceptDtos);
+        $createOrderDto = new CreateOrderDto($selectedClientId, $orderConceptDtos);
 
         try {
             $this->handler->handle($createOrderDto);
@@ -148,13 +156,14 @@ class CreateOrderCommand extends AbstractCommand
             return Command::SUCCESS;
         } catch (ValidationException $e) {
             $violations = $e->getViolations();
-            $output->writeln('<error>'.$violations.'</error>');
+            $output->writeln('<error>' . $violations . '</error>');
             return Command::FAILURE;
         } catch (EntityNotFoundException $e) {
-            $output->writeln('<error>'.$e->getMessage().'</error>');
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
             return Command::FAILURE;
-        } catch (\Exception $e) {
-            $output->writeln('<error>'.$e->getMessage().'</error>');
+        } catch (Exception $e) {
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            $this->monitoring->captureException($e);
             return Command::FAILURE;
         }
 

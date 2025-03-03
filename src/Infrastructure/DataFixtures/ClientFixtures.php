@@ -7,10 +7,13 @@ namespace App\Infrastructure\DataFixtures;
 use App\Application\Client\Service\ClientFactoryService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+
 class ClientFixtures extends Fixture
 {
 
-    public function __construct(private ClientFactoryService $clientFactoryService)   {}
+    public function __construct(private ClientFactoryService $clientFactoryService)
+    {
+    }
 
     public function load(ObjectManager $manager): void
     {

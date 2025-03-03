@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Command;
 
-use App\Application\Product\DTO\ProductDTO;
+use App\Application\Product\DTO\CreateProductDto;
 use App\Application\Product\Service\CreateProductService;
 use App\Domain\Shared\Exception\ValidationException;
+use App\Domain\Shared\Interface\MonitoringInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,9 +21,12 @@ use Symfony\Component\Console\Question\Question;
 )]
 class CreateProductCommand extends AbstractCommand
 {
-    public function __construct(private CreateProductService $createProductService)
+    private MonitoringInterface $monitoring;
+
+    public function __construct(private CreateProductService $createProductService, MonitoringInterface $monitoring)
     {
         parent::__construct();
+        $this->monitoring = $monitoring;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,7 +55,7 @@ class CreateProductCommand extends AbstractCommand
 
         try {
 
-            $productDTO = new ProductDTO($nombre, $precio, $impuesto, $stock);
+            $productDTO = new CreateProductDto($nombre, $precio, $impuesto, $stock);
 
             $this->createProductService->execute($productDTO);
 
@@ -58,6 +63,10 @@ class CreateProductCommand extends AbstractCommand
 
         } catch (ValidationException $e) {
             $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            return Command::FAILURE;
+        } catch (Exception $e) {
+            $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            $this->monitoring->captureException($e);
             return Command::FAILURE;
         }
 

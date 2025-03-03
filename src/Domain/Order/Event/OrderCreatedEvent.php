@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Order\Event;
 
-use App\Domain\Shared\Event\DomainEventInterface;
 use App\Domain\Order\Entity\Order;
+use App\Domain\Shared\Event\DomainEventInterface;
 use Carbon\Carbon;
 
 final class OrderCreatedEvent implements DomainEventInterface
@@ -13,10 +13,11 @@ final class OrderCreatedEvent implements DomainEventInterface
     private Carbon $occurredOn;
 
     public function __construct(
-        private readonly int $orderId,
-        private readonly int $clientId,
+        private readonly int    $orderId,
+        private readonly int    $clientId,
         private readonly Carbon $createdAt
-    ) {
+    )
+    {
         $this->occurredOn = Carbon::now();
     }
 
@@ -29,6 +30,11 @@ final class OrderCreatedEvent implements DomainEventInterface
         );
     }
 
+    public function getCreatedAt(): Carbon
+    {
+        return $this->createdAt;
+    }
+
     public function getOrderId(): int
     {
         return $this->orderId;
@@ -37,11 +43,6 @@ final class OrderCreatedEvent implements DomainEventInterface
     public function getClientId(): int
     {
         return $this->clientId;
-    }
-
-    public function getCreatedAt(): Carbon
-    {
-        return $this->createdAt;
     }
 
     public function getOccurredOn(): Carbon

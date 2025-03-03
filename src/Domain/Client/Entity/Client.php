@@ -29,7 +29,7 @@ class Client
     public function __construct(string $name, string $surname)
     {
         $this->orders = new ArrayCollection();
-        $this->name= $name;
+        $this->name = $name;
         $this->surname = $surname;
     }
 

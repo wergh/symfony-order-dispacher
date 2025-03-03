@@ -15,23 +15,23 @@ final class OrderConcept
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'concepts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Order $order;
+    private readonly Order $order;
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    private int $productId;
+    private readonly int $productId;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $productName;
+    private readonly string $productName;
 
     #[ORM\Column(type: 'float')]
-    private float $unitPrice;
+    private readonly float $unitPrice;
 
     #[ORM\Column(type: 'integer')]
-    private int $tax;
+    private readonly int $tax;
 
     #[ORM\Column(type: 'integer')]
-    private int $quantity;
+    private readonly int $quantity;
 
     public function __construct(Order $order, int $productId, string $productName, float $unitPrice, int $tax, int $quantity)
     {
