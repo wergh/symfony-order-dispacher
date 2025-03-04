@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="811d1e6d-7b7d-48fc-88f9-1a206f1b74b1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ipglobal.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ipglobal.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/Command/CreateOrderCommandHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/Command/CreateOrderCommandHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/AcceptOrderUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/FailedOrderUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/FailedOrderUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Order/UseCase/UpdateStocksUseCase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Client/Entity/Client.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Client/Entity/Client.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Order/Entity/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Command/CreateOrderCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/Command/CreateOrderCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +193,7 @@
       <workItem from="1740876107428" duration="19283000" />
       <workItem from="1740932644379" duration="20484000" />
       <workItem from="1741002631111" duration="23643000" />
-      <workItem from="1741095354710" duration="8999000" />
+      <workItem from="1741095354710" duration="11118000" />
     </task>
     <servers />
   </component>
