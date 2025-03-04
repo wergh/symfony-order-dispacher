@@ -18,9 +18,8 @@ final class FailedOrderUseCase
      * FailedOrderUseCase constructor.
      *
      * @param RepositoryFactoryInterface $repositoryFactory The factory to create repositories for domain entities.
-     * @param LoggerInterface $logger The logger for logging any necessary messages.
      */
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory, private LoggerInterface $logger)
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
     {
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Order\UseCase;
 
 use App\Domain\Order\Entity\Order;
-use App\Domain\Shared\Interface\LoggerInterface;
 use App\Domain\Shared\Interface\RepositoryFactoryInterface;
 
 /**
@@ -17,9 +16,8 @@ final class AcceptOrderUseCase
      * AcceptOrderUseCase constructor.
      *
      * @param RepositoryFactoryInterface $repositoryFactory The factory to create repositories for domain entities.
-     * @param LoggerInterface $logger The logger for logging events.
      */
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory, private LoggerInterface $logger)
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
     {
     }
 

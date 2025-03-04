@@ -11,7 +11,7 @@ use App\Domain\Order\Entity\Order;
 /**
  * Command handler for creating an order.
  */
-final class CreateOrderCommandHandler
+class CreateOrderCommandHandler
 {
     /**
      * CreateOrderCommandHandler constructor.

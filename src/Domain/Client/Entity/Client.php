@@ -120,4 +120,25 @@ class Client
 
         return $this;
     }
+
+    /**
+     * Add a order to the client.
+     *
+     * @param Order $order The order to add.
+     *
+     * @return void.
+     */
+    public function addOrder(Order $order): void
+    {
+        $this->orders->add($order);
+    }
+    /**
+     * Get all the orders of the client.
+     *
+     * @return Collection The collection of the orders.
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
 }

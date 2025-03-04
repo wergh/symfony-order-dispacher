@@ -80,7 +80,7 @@ class CreateOrderCommand extends AbstractCommand
         $helper = $this->getHelper('question');
 
         $clients = $this->clientRepository->all();
-        if (empty($clients)) {
+        if ($clients->count() === 0) {
             $output->writeln('<error>No hay clientes disponibles.</error>');
             return Command::FAILURE;
         }
@@ -104,7 +104,7 @@ class CreateOrderCommand extends AbstractCommand
         }
 
         $products = $this->productRepository->all();
-        if (empty($products)) {
+        if ($products->count() === 0) {
             $output->writeln('<error>No hay productos disponibles.</error>');
             return Command::FAILURE;
         }

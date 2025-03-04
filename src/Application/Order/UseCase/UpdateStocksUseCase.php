@@ -17,9 +17,8 @@ final class UpdateStocksUseCase
      * UpdateStocksUseCase constructor.
      *
      * @param RepositoryFactoryInterface $repositoryFactory The factory to create repositories for domain entities.
-     * @param LoggerInterface $logger The logger to log any errors or information during execution.
      */
-    public function __construct(private RepositoryFactoryInterface $repositoryFactory, private LoggerInterface $logger)
+    public function __construct(private RepositoryFactoryInterface $repositoryFactory)
     {
     }
 
