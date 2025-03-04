@@ -166,4 +166,65 @@ In the event of any queue failure, the system is configured to perform 3 retries
 
 Error or exception notifications can be controlled through an enabled **Sentry** instance.  
 
+### Testing
+
+All operations performed in the application can be tested through unit tests.
+
+To verify everything is working correctly, you can run the following command:
+
+```bash
+docker-compose exec app php bin/phpunit  
+```
+
+## Explicación del ejercicio
+
+Para la explicación del ejercicio voy a pasar al castellano. La primera parte esta en inglés porque considero que es el idioma
+correcto para poner en los readme de los repositorios, pero en harás de la comodidad voy a escribir esta parte en castellano
+para que sea más accesible a cualquier persona.
+Para este ejercicio he elegido un patrón de diseño DDD con arquitectura Hexagonal y intentando respetar siempre los principios
+SOLID
+
+### Capa de Dominio
+
+En la capa de dominio tenemos, agrupadas por carpetas, los 3 grandes grupos que componen la aplicación:
+- Clientes
+- Productos
+- Pedidos
+
+Y a mayores un grupo más llamado Shared para todos aquellos recursos compartidos dentro de la capa de dominio.
+
+#### Client - Capa de Dominio
+
+Cliente sea posiblemente la Entidad más sencilla dado que solo he asignado dos atributos a la entidad, con el objetivo de facilitar los testeos
+El cliente solo tiene nombre y apellidos, y a mayores de la entidad simplemente se ha creado una clase de Factory para facilitar
+los seeders de la base de datos y una Interfaz para su repositorio.
+
+#### Product - Capa de Dominio
+
+El producto también es una Entidad sencilla, con algunos atributos más que la entidad de cliente, para hacer una simulación
+un poco más veraz, ya que incluye precio e impuestos. A mayores se ha añadido el atributo stock como un entero para la verficación
+de sí cuando se ejecuta un pedido queda stock o no. Este campo en un caso real posiblemente fuese un atributo computado obtenido de
+almacenes, centros logísticos etc... más que un campo de la base de datos, pero para esta aplicación de prueba nos sirve.
+
+A mayores de la entidad tenemos también un método Factory para los seeders, la interfaz del repositorio y una excepción propia de esta entidad
+que es la excepcion de Stock insuficiente
+
+#### Order - Capa de Dominio
+
+Los pedidos tienen una capa de dominio ligeramente más compleja. Para empezar la entidad no solo tiene atributos planos.
+Para los conceptos de un pedido o las líneas, de un pedido se han creado un ValueObject dado que refleja mejor lo que son.
+Una vez un pedido se crea los conceptos del mismo no pueden modificarse, y esa propiedad de inmutabilidad los convierte 
+en Value Objects. También se ha generado un Enum, ya que PHP nos los brinda desde su versión 8, para reflejar los estados 
+del pedido dondne se ha añadido un estado más de los indicados en el enunciado del pedido que es el estado de Fallido (failed)
+que describiremos cuando hablemos de la funcionalidad.
+A mayores de estos dos atributos tenemos al igual que las anteriores la interfaz del repositorio y en este caso los Eventos.
+Dado que la creación de las orders es lo que dispara toda la lógica de nuestra aplicación aquí tenemos los eventos que se disparan
+en esos momentos. Cocretamente tenemos el OrderCreatedEvent y el OrderStatusUpdatedEvent que se disparan cuando un pedido se crea
+o cuando el estado de un pedido cambia.
+
+#### Shared - Capa de Dominio
+La última carpeta es la de shared donde se encuentran la interfaz de evento de dominio, Interfaces generales para la aplicación
+y excepciones generales 
+
+### Capa de Aplicación
 
