@@ -112,21 +112,21 @@ The first step is install the composer packages. Run the command
 docker-compose exec app composer install
 ```
 
-1. **Run Migrations**  
+2. **Run Migrations**  
    The first step is to execute the application migrations to create the necessary database tables. You can do this by running:
 
 ```bash
 docker-compose exec app php bin/console doctrine:migrations:migrate  
 ```
 
-2. **Validate the Schema**  
+3. **Validate the Schema**  
    You can validate the schema with the following command:  
 
 ```bash
 docker-compose exec app php bin/console doctrine:schema:validate  
 ```
 
-3. **Deploy Seeders**  
+4. **Deploy Seeders**  
    If you want to add some test data to the database, you can do so with the following command:  
 
 ```bash
