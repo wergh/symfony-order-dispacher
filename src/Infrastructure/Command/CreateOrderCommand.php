@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Command;
 
-use App\Application\Order\Command\CreateOrderCommandHandler;
-use App\Application\Order\DTO\OrderConceptDto;
 use App\Application\Order\DTO\CreateOrderDto;
+use App\Application\Order\DTO\OrderConceptDto;
+use App\Application\Order\Service\CreateOrderService;
 use App\Domain\Shared\Exception\EntityNotFoundException;
 use App\Domain\Shared\Exception\ValidationException;
 use App\Domain\Shared\Interface\MonitoringInterface;
@@ -44,16 +44,16 @@ class CreateOrderCommand extends AbstractCommand
     /**
      * CreateOrderCommand constructor.
      *
-     * @param DoctrineClientRepository  $clientRepository  Repository to fetch clients.
+     * @param DoctrineClientRepository $clientRepository Repository to fetch clients.
      * @param DoctrineProductRepository $productRepository Repository to fetch products.
-     * @param CreateOrderCommandHandler $handler  Handler to process order creation.
-     * @param ParameterBagInterface     $params   Parameter bag for configuration.
-     * @param MonitoringInterface       $monitoring Monitoring service for error capturing.
+     * @param CreateOrderService $service Handler to process order creation.
+     * @param ParameterBagInterface $params Parameter bag for configuration.
+     * @param MonitoringInterface $monitoring Monitoring service for error capturing.
      */
     public function __construct(
         private DoctrineClientRepository  $clientRepository,
         private DoctrineProductRepository $productRepository,
-        private CreateOrderCommandHandler $handler,
+        private CreateOrderService        $service,
         private ParameterBagInterface     $params,
         MonitoringInterface               $monitoring
     )
@@ -70,7 +70,7 @@ class CreateOrderCommand extends AbstractCommand
      * validate stock, and creates an order. If any error occurs during
      * the creation process, it will be captured and reported.
      *
-     * @param InputInterface  $input  The console input interface.
+     * @param InputInterface $input The console input interface.
      * @param OutputInterface $output The console output interface.
      *
      * @return int The command exit status: Command::SUCCESS on success, Command::FAILURE on failure.
@@ -180,7 +180,7 @@ class CreateOrderCommand extends AbstractCommand
         $createOrderDto = new CreateOrderDto($selectedClientId, $orderConceptDtos);
 
         try {
-            $this->handler->handle($createOrderDto);
+            $this->service->execute($createOrderDto);
             $output->writeln('<info>Orden creada con éxito.</info>');
             return Command::SUCCESS;
         } catch (ValidationException $e) {

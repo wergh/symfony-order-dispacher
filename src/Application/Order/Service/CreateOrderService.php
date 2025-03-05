@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Order\Command;
+namespace App\Application\Order\Service;
 
 use App\Application\Order\Dto\CreateOrderDto;
 use App\Application\Order\UseCase\CreateOrderUseCase;
 use App\Domain\Order\Entity\Order;
 
 /**
- * Command handler for creating an order.
+ * Service for creating an order.
  */
-class CreateOrderCommandHandler
+class CreateOrderService
 {
     /**
-     * CreateOrderCommandHandler constructor.
+     * CreateOrderService constructor.
      *
      * @param CreateOrderUseCase $createOrderUseCase The use case to create an order.
      */
@@ -31,7 +31,7 @@ class CreateOrderCommandHandler
      *
      * @return Order The created order entity.
      */
-    public function handle(CreateOrderDto $command): Order
+    public function execute(CreateOrderDto $command): Order
     {
         return $this->createOrderUseCase->execute($command);
     }

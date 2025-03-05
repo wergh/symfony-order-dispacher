@@ -148,7 +148,7 @@ docker-compose exec app php bin/console app:create-product
 ### Update Stock Command
 This command is used to update the stock of a product in the database. You can run it with:
 ```bash
-docker-compose exec app php bin/console app:stock-update  
+docker-compose exec app php bin/console app:update-stock  
 ```
 
 ### Create Order Command
@@ -174,6 +174,36 @@ To verify everything is working correctly, you can run the following command:
 
 ```bash
 docker-compose exec app php bin/phpunit  
+```
+### Application Flow Variations
+
+Two environment variables have been implemented in the `.env` file, which slightly modify the way the application works:
+
+#### Stock Control During Order Creation
+
+The first variable enables or disables stock control when creating an order.
+- When set to **true**, the system will always verify that there is enough stock available at the moment of order creation.
+- However, this does not remove the second stock verification performed during order processing, as this step is unavoidable.
+
+This option has been implemented to improve testability, allowing orders to be created with a stock quantity greater than the available amount. This enables simulation and validation of the application's flow in cases where stock is insufficient.
+
+#### Forcing Errors in Order Processing
+
+The second variable allows forced errors during order processing. It accepts values between **0 and 100**:
+- **0** means no forced failures.
+- **100** means all order processing attempts will fail.
+- **50** means that **50% of the orders will fail**, while the remaining 50% will be processed successfully.
+
+This variable has been added to intentionally introduce failures in queue processing and observe how the application behaves when the message queues fail for any reason. This enables the simulation of error scenarios within the queuing system, ensuring that the application correctly handles these situations and maintains a stable workflow.
+
+These variables allow for more flexible testing, simulating specific conditions in the application flow to ensure its robustness under different scenarios.
+
+#### Important Note
+
+If you modify any of these environment variables in the `.env` file, you must rebuild the Docker containers for the changes to take effect. Run the following command:
+
+```bash
+docker-compose up -d --build 
 ```
 
 ## Explicación del ejercicio
@@ -228,3 +258,165 @@ y excepciones generales
 
 ### Capa de Aplicación
 
+Capa de Aplicación
+En la capa de aplicación, al igual que en la capa de dominio, existen tres grandes carpetas donde se agrupan los archivos según los tres principales grupos: Producto, Cliente y Pedido.
+
+Cada una de estas carpetas contiene los siguientes elementos clave:
+
+- **DTOs** (Data Transfer Objects):
+Los DTOs actúan como un sistema de transporte de datos entre la capa de infraestructura y la capa de aplicación, evitando así instanciar directamente la capa de dominio desde infraestructura. Además, ayudan a acotar los datos que se envían en la request hacia la capa de aplicación.
+
+   En este caso en particular, dado que los comandos han sido diseñados específicamente para los servicios que necesitamos, no existen datos extra en los DTOs. Sin embargo, en un caso real siempre utilizaríamos DTOs para transportar los datos de manera estructurada.
+
+- **Servicios:**
+Los servicios cumplen la función de puente entre la capa de infraestructura y la capa de aplicación. Son los encargados de recibir las peticiones desde infraestructura y delegarlas a donde sea necesario dentro de la aplicación.
+
+-  **Casos de Uso:**
+En los casos de uso seguimos estrictamente los principios SOLID, asegurándonos de que cada uno tenga una única responsabilidad, la cual queda claramente reflejada en su nombre. Esto permite mantener una arquitectura limpia, modular y fácilmente escalable.
+
+-  **Validadores**:
+Se han añadido validadores como una segunda capa de validación, aunque ya existe una validación previa en los comandos sobre los datos que reciben los DTOs. Su propósito es garantizar que todos los datos que se intentan pasar a los constructores de las entidades tengan el formato correcto.
+
+-  **Sequencer** para Órdenes:
+En el caso de las pedidos, se ha añadido un sequencer debido a que, al momento de crear una pedido, se deben ejecutar varios casos de uso en secuencia, como crear la pedido, buscar los productos, crear los conceptos, etc.
+
+   Para evitar que un servicio tenga que instanciar varios casos de uso directamente, el sequencer se encarga de orquestar la ejecución de cada caso de uso en el pedido correcto, asegurando un flujo estructurado y mantenible.
+
+### Capa de Infraestructura
+La capa de infraestructura contiene todos los elementos encargados de interactuar con el mundo exterior fuera de nuestra aplicación. Aquí gestionamos la comunicación con:
+
+-  Base de datos
+-  Colas de RabbitMQ
+- Logger (utilizando Monolog)
+ - Sentry
+-  Otros servicios externos
+  
+Para organizar estos elementos, la capa de infraestructura se divide en varias carpetas:
+
+**Command**: Contiene todos los comandos de la aplicación. Además, incluye una clase abstracta, AbstractCommand, que implementa funcionalidades generales para todos los comandos.
+
+**DataFixtures**: Contiene los datos iniciales para la base de datos, como los headers necesarios para cargar información de ejemplo.
+
+**Logging**: Implementa la interfaz de Logger definida en la capa de dominio, utilizando Monolog para la gestión de logs.
+
+**Messenger**: Gestiona la interacción con las colas de RabbitMQ, incluyendo los consumidores de las colas y un listener que reenvía mensajes a una cola de salida en caso de fallar tres veces.
+
+**Monitoring**: Contiene la integración con Sentry para el monitoreo de errores y eventos dentro de la aplicación.
+
+**Persistencia/Doctrine**: Contiene las implementaciones de las interfaces de cada entidad definida en el dominio.
+Incluye un listener que detecta cambios en la base de datos relacionados con las pedidos, disparando eventos cuando sea necesario.
+Esta estructura permite una organización clara de los componentes de infraestructura y facilita la integración con servicios externos sin acoplar la lógica de negocio a estos elementos.
+
+## ¿Cómo funciona?
+
+El flujo de la aplicación es bastante sencillo. Dejando de lado los comandos auxiliares como crear cliente, crear producto y actualizar stock, que simplemente actualizan la base de datos, el comando de crear órdenes tiene un funcionamiento un poco más extenso.
+
+Concretamente, el comando de crear órdenes sigue estos pasos:
+
+1. Creación de la orden:
+
+   - En primera instancia, el comando añade una nueva instancia de la entidad Orden en la base de datos.
+2. Disparo del evento OrderCreated:
+
+   - Cuando se crea la instancia en la base de datos, se dispara el evento OrderCreated.
+   - Esto sucede porque Orden tiene un listener de Doctrine que monitorea los cambios en la base de datos. 
+3. Listener de Doctrine:
+   - El listener está configurado para ejecutar el evento persist en Doctrine específicamente para la entidad Orden.
+   - Cuando este evento se dispara, el listener ejecuta la lógica correspondiente para procesar la orden.
+4. Envío del mensaje a RabbitMQ:
+   - En el momento en que se dispara el evento, se envía un mensaje a RabbitMQ a través del Messenger de Symfony.
+   - Este mensaje se añade en la cola ORDER_CREATED_QUEUE e incluye:
+     - ORDER ID
+     -   CLIENT ID
+     - Fecha y hora de la orden
+5. Procesamiento del mensaje por el Supervisor:
+
+   - Desde el momento en que se levanta el worker, el Supervisor está activo, revisando constantemente la cola.
+   - Si se recibe un mensaje, se procesa automáticamente.
+6. Ejecución del Consumer de Symfony:
+   - Symfony tiene configurados los Consumers que consumen cada cola.
+   - Para esta cola en particular, el mensaje es recibido por el Consumer de "Procesar la Orden".
+   - Este Consumer llama al servicio, que a su vez invoca al Sequencer, donde se ejecutan todos los casos de uso asociados al procesamiento de la orden.
+7. Ejecución del Sequencer:
+
+   - El Sequencer irá llamando a todos los casos de uso necesarios para procesar una orden.
+   - Primero buscará la instancia de la Orden.
+   - Luego, recorrerá cada uno de los conceptos y obtendrá los productos asociados a ellos.
+   - Para cada producto, verificará si hay stock suficiente para procesar el pedido.
+   - En caso de que haya stock suficiente, lo descontará del inventario.
+8. Finalización de la orden:
+   - Cuando haya terminado de procesar todos los conceptos, el estado de la orden se marcará como aceptado.
+9. Excepción por stock insuficiente:
+   - Si en algún momento se detecta que un producto no tiene el stock necesario, la revisión de productos se detendrá y se lanzará una excepción de stock insuficiente.
+   - Esta excepción tiene dos efectos importantes:
+     - Se realiza un rollback de todo lo realizado hasta ese momento, asegurando que los productos procesados antes del que no pudo ser procesado no modifiquen su stock, evitando pedidos incompletos en la base de datos.
+     - El estado de la orden se actualizará a cancelado.
+10. Disparo de eventos en el cambio de estado:
+
+    - En el momento en el que el estado de la orden pasa a aceptado o cancelado, se dispara un segundo evento dentro del listener de las órdenes.
+    - Concretamente, se disparan dos eventos:
+      - Pre-update: Este evento guarda el estado de la orden antes del guardado.
+      - Post-update: Este evento comprueba si el estado de la orden ha cambiado.
+    - En el ejercicio actual, esto no tiene mucho sentido, ya que la orden solo se actualiza para cambiar su estado. Por lo tanto, si la orden ha cambiado, se considera que siempre habrá un cambio de estado.
+    - Sin embargo, en una implementación futura o en un caso real de uso, podría ser que se modifique la orden, pero que el estado no cambie. En ese caso, este patrón previene que se lance el evento innecesariamente.
+11. Notificación de cambio de estado:
+    - Cuando el estado de la orden cambia, se añade un mensaje en la cola ORDER_STATUS_CHANGED_WEB.
+    - El mensaje incluye:
+      - ORDER ID
+      - Un mensaje personalizado en función del nuevo estado (aceptado, cancelado, fallido).
+    - El Supervisor está configurado para procesar esta cola y, cuando se recibe un mensaje, Symfony redirige el mensaje al consumer correspondiente.
+    - El trabajo de este consumer y del servicio asociado es notificar al usuario.
+    - Si el estado es aceptado, el servicio envía una notificación de éxito, para este ejemplo, registrando un log con LOGGER indicando que el pedido ha sido procesado.
+    - Si el estado es cancelado, se notifica al usuario que el pedido ha sido cancelado.
+    - Además, se ha añadido un tercer estado, fallido, que se utilizará en el caso de que alguna de las colas de procesamiento falle.
+
+Este flujo asegura que las órdenes se procesen de manera eficiente y consistente, gestionando las excepciones de stock de forma que se garantice la integridad de los datos en la base de datos y notificando al usuario del resultado de su pedido.
+
+### ¿Cómo funciona en caso de error en las colas?
+
+En el caso de que cualquiera de las dos colas falle, debido a un problema como que RabbitMQ esté caído o por cualquier otra excepción, fuera del motivo de que no haya stock, la cola pasará a estar fallida.
+
+El sistema de Messenger está configurado para que intente procesar el mensaje tres veces. Si después de tres intentos el procesamiento sigue fallando, el mensaje se enviará a una cola de fallos, específicamente _failed_queue_, donde quedará almacenado para su posterior revisión y procesamiento manual.
+
+Además, hemos implementado un listener para el evento propio de Symfony que maneja el fallo de una cola. Este listener se activa cuando ya no hay más intentos de reintento disponibles. En este caso, el listener cambia automáticamente el estado de la orden a fallido.
+
+Por último, también se dispara el evento de cambio de estado, notificando al usuario que su pedido ha fallado debido a motivos técnicos y que, por favor, lo intente de nuevo.
+
+Este mecanismo garantiza que los pedidos con errores fuera del control de stock sean gestionados de forma adecuada y el usuario reciba una notificación clara sobre el estado de su pedido.
+
+Además de la gestión de las colas fallidas o cualquier otra excepción que pueda ocurrir durante el uso del programa, todo está monitorizado a través de **Sentry** para que siempre haya notificaciones de cualquier error que se pueda producir a lo largo del procesamiento de la aplicación.
+
+Esto garantiza que cualquier incidencia técnica o fallo en el sistema sea detectado de inmediato y se pueda tomar acción para resolverlo rápidamente.
+
+## Variaciones del flujo de la aplicación
+Se han implementado dos variables en el archivo de entorno .env que modifican ligeramente la forma de trabajar de la aplicación:
+
+1. Control de stock en la creación del pedido:
+La primera variable activa o desactiva el control de stock a la hora de realizar un pedido. Cuando su valor es true, siempre se verificará que el producto tenga stock suficiente al momento de crear la orden. Sin embargo, esto no elimina la segunda comprobación que se realiza durante el procesamiento de la orden, ya que esta es inevitable. Esta opción ha sido implementada para mejorar la testabilidad, permitiendo crear órdenes con un stock superior al disponible para poder simular y comprobar el flujo de la aplicación en caso de que el stock sea insuficiente.
+
+2. Forzar errores en el procesamiento de pedidos:
+La segunda variable permite forzar errores en el procesamiento de los pedidos. Esta variable tiene un valor entre 0 y 100:
+
+   - 0 significa que no habrá fallos forzados.
+   - 100 indica que todos los procesamientos fallarán.
+   - Un valor de, por ejemplo, 50 haría que el 50% de los procesamientos fallaran y el otro 50% se procesaran correctamente.
+     
+   Esta variable se ha añadido para poder forzar fallos en el procesamiento de las colas y ver el flujo de la aplicación en caso de que falle el procesamiento de las colas por cualquier motivo. De este modo, se pueden simular escenarios de error en el sistema de colas, lo que permite probar cómo la aplicación maneja estas situaciones y asegura que todo el flujo de trabajo se gestione adecuadamente.
+
+Estas variables permiten realizar pruebas más flexibles, simulando condiciones específicas en el flujo de la aplicación para asegurar su robustez en diferentes escenarios.
+
+## Consideraciones finales
+He aplicado el diseño DDD, arquitectura externa y seguido firmemente los principios SOLID. Sin embargo, es importante señalar que, en la comunidad, existe cierta controversia sobre en qué punto deben aplicarse estos enfoques. En este caso, he aplicado lo que considero la forma más razonable de hacerlo. Esto no quiere decir que sea la única forma correcta o incorrecta, sino que es la manera en la que considero que debe construirse este sistema.
+
+Esto no implica que, si trabajamos juntos en el futuro, debamos seguir este mismo enfoque. Por supuesto, me adaptaría al sistema que se utilice en vuestra empresa. Lo que quiero destacar es que he querido aportar mi enfoque personal a esta arquitectura, y con ello espero ofrecer una base flexible que permita ajustarse a otros contextos y necesidades.
+
+Para ilustrar mi enfoque, a continuación pongo un ejemplo de cómo lo he aplicado:
+
+Actualmente, para crear las tablas de la base de datos, utilizo el sistema de anotaciones en las entidades. Sin embargo, desde un punto de vista estricto de la arquitectura hexagonal, esta práctica no es la más adecuada. Esto se debe a que Doctrine, para crear las tablas, consulta las entidades, las cuales se encuentran en la capa de dominio. Esto supone una violación de los principios de la arquitectura hexagonal, ya que la capa de dominio no debe depender de detalles de infraestructura, como la persistencia de datos.
+
+No obstante, en el contexto de Symfony, esta es la forma convencional de crear las tablas de la base de datos, lo que genera un pequeño dilema entre seguir las prácticas recomendadas del framework y adherirse estrictamente a la arquitectura hexagonal.
+
+¿Cómo se podría mejorar para ajustarse mejor a la arquitectura hexagonal?
+Para respetar mejor los principios de la arquitectura hexagonal, una opción sería eliminar las anotaciones de las entidades en la capa de dominio y trasladarlas a otros archivos dentro de la capa de infraestructura. Estos archivos serían los encargados de reflejar las entidades, permitiendo que Symfony busque las anotaciones en estos archivos en lugar de en las entidades directamente. De este modo, se lograría una separación más clara entre el dominio y la infraestructura, mejorando el respeto por la arquitectura hexagonal.
+
+Sin embargo, en mi opinión, esta solución choca un poco con el flujo de trabajo natural de Symfony, que está diseñado para gestionar la creación de tablas directamente desde las entidades, por lo que se perdería cierta simplicidad y agilidad en el desarrollo.

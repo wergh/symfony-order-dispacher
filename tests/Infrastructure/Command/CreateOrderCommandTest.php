@@ -2,7 +2,6 @@
 
 namespace App\Tests\Infrastructure\Command;
 
-use App\Application\Order\Command\CreateOrderCommandHandler;
 use App\Application\Order\DTO\CreateOrderDto;
 use App\Domain\Client\Entity\Client;
 use App\Domain\Product\Entity\Product;
@@ -28,7 +27,7 @@ class CreateOrderCommandTest extends TestCase
 {
     private $clientRepository;
     private $productRepository;
-    private $handler;
+    private $service;
     private $params;
     private $monitoring;
     private $command;
@@ -214,8 +213,8 @@ class CreateOrderCommandTest extends TestCase
 
         $this->command->setHelperSet($helperSet);
 
-        $this->handler->expects($this->once())
-            ->method('handle')
+        $this->service->expects($this->once())
+            ->method('execute')
             ->with($this->callback(function (CreateOrderDto $dto) {
                 return $dto->clientId === 1 &&
                     count($dto->concepts) === 1 &&
@@ -279,8 +278,8 @@ class CreateOrderCommandTest extends TestCase
         ]);
 
         $exception = new ValidationException($violationList);
-        $this->handler->expects($this->once())
-            ->method('handle')
+        $this->service->expects($this->once())
+            ->method('execute')
             ->willThrowException($exception);
 
         $this->commandTester->execute([]);
@@ -328,8 +327,8 @@ class CreateOrderCommandTest extends TestCase
         $this->command->setHelperSet($helperSet);
 
         $exception = new EntityNotFoundException('Entity not found');
-        $this->handler->expects($this->once())
-            ->method('handle')
+        $this->service->expects($this->once())
+            ->method('execute')
             ->willThrowException($exception);
 
         $this->commandTester->execute([]);
@@ -377,8 +376,8 @@ class CreateOrderCommandTest extends TestCase
         $this->command->setHelperSet($helperSet);
 
         $exception = new Exception('Something went wrong');
-        $this->handler->expects($this->once())
-            ->method('handle')
+        $this->service->expects($this->once())
+            ->method('execute')
             ->willThrowException($exception);
 
         $this->monitoring->expects($this->once())
@@ -395,7 +394,7 @@ class CreateOrderCommandTest extends TestCase
     {
         $this->clientRepository = $this->createMock(DoctrineClientRepository::class);
         $this->productRepository = $this->createMock(DoctrineProductRepository::class);
-        $this->handler = $this->createMock(CreateOrderCommandHandler::class);
+        $this->service = $this->createMock(\App\Application\Order\Service\CreateOrderService::class);
         $this->params = $this->createMock(ParameterBagInterface::class);
         $this->monitoring = $this->createMock(MonitoringInterface::class);
 
@@ -406,7 +405,7 @@ class CreateOrderCommandTest extends TestCase
         $this->command = new CreateOrderCommand(
             $this->clientRepository,
             $this->productRepository,
-            $this->handler,
+            $this->service,
             $this->params,
             $this->monitoring
         );
