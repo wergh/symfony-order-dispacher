@@ -220,7 +220,7 @@ Para la explicación del ejercicio voy a pasar al castellano. La primera parte e
 correcto para poner en los readme de los repositorios, pero en harás de la comodidad voy a escribir esta parte en castellano
 para que sea más accesible a cualquier persona.
 Para este ejercicio he elegido un patrón de diseño DDD con arquitectura Hexagonal y intentando respetar siempre los principios
-SOLID
+SOLID. Se han subido los archivos del .env sin encriptar para facilitar el testeo sin tener que enviara clave de desencriptación por otro sitio.
 
 ### Capa de Dominio
 
