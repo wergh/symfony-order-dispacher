@@ -105,6 +105,13 @@ This will start all the required services (**Nginx, MySQL, RabbitMQ, Supervisor,
 
 #### First Initialization (or Initialization after a `down -v`)
 
+1. **Install the composer**
+The first step is install the composer packages. Run the command
+
+```bash
+docker-compose exec app composer install
+```
+
 1. **Run Migrations**  
    The first step is to execute the application migrations to create the necessary database tables. You can do this by running:
 
